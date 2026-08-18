@@ -301,7 +301,139 @@ document.getElementById('btnGen').addEventListener('click', () => {
     { text: "." }
   ], M, y, W, LH, FS);
 
-  // ---- Footer ----
+  // ---- Footer (page 1) ----
+  doc.addImage(IMG2, "PNG", (612 - 48) / 2, 690, 48, 37);
+  doc.addImage(IMG3, "PNG", (612 - 480) / 2, 736, 480, 14);
+
+  // ==================== PAGE 2: Additional Information ====================
+  doc.addPage();
+
+  // Repeat header
+  doc.addImage(IMG1, "PNG", M, 34, 150, 38);
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(10.5);
+  doc.text("CHBL#14289", 612 - M, 46, { align: "right" });
+
+  let y2 = 108;
+
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(13);
+  doc.text("Additional Information", M, y2);
+  doc.setFontSize(FS);
+  y2 += LH + 10;
+
+  // Helper: draw a single checkbox + label, returns advanced y
+  const checkboxLine = (label, boldLabel) => {
+    doc.setLineWidth(0.9);
+    doc.rect(M + 8, y2 - box + 1.5, box, box);
+    inline(doc, [ { text: label, bold: !!boldLabel } ], M + 8 + box + 8, y2, FS);
+    y2 += LH + 4;
+    doc.setLineWidth(0.5);
+  };
+
+  // Helper: draw two checkboxes (Yes / No) on the same line
+  const yesNoLine = () => {
+    doc.setLineWidth(0.9);
+    doc.rect(M + 8, y2 - box + 1.5, box, box);
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(FS);
+    doc.text("Yes", M + 8 + box + 8, y2);
+    const noX = M + 8 + box + 8 + doc.getTextWidth("Yes") + 24;
+    doc.rect(noX, y2 - box + 1.5, box, box);
+    doc.text("No", noX + box + 8, y2);
+    y2 += LH + 10;
+    doc.setLineWidth(0.5);
+  };
+
+  // Helper: a ruled blank line for handwritten answers
+  const ruledLine = () => {
+    doc.setLineWidth(0.5);
+    doc.line(M, y2 + 2, M + W, y2 + 2);
+    y2 += LH + 4;
+  };
+
+  // --- 1. Import value change ---
+  doc.setFont("helvetica", "bold");
+  doc.text("My import value will:", M, y2);
+  y2 += LH + 4;
+  checkboxLine("Remain the Same");
+  checkboxLine("Increase By _______ %");
+  checkboxLine("Decrease By _______ %");
+  y2 += 8;
+
+  // --- 2. New manufacturing countries ---
+  doc.setFont("helvetica", "bold");
+  doc.text("Are there any new manufacturing countries?", M, y2);
+  y2 += LH + 4;
+  yesNoLine();
+  doc.setFont("helvetica", "normal");
+  doc.text("If yes, list the countries:", M, y2);
+  y2 += LH + 6;
+  ruledLine();
+  ruledLine();
+  y2 += 6;
+
+  // --- 3. Antidumping / countervailing (current products) ---
+  y2 = richPara(doc, [
+    { text: "Are any products subject to antidumping/countervailing", bold: true },
+    { text: "*", bold: true },
+    { text: "?", bold: true }
+  ], M, y2, W, LH, FS);
+  y2 += 4;
+  yesNoLine();
+  y2 += 4;
+
+  // --- 4. Antidumping / countervailing (anticipated products) ---
+  y2 = richPara(doc, [
+    { text: "Do you anticipate importing products subject to antidumping or countervailing duties", bold: true },
+    { text: "*", bold: true },
+    { text: "?", bold: true }
+  ], M, y2, W, LH, FS);
+  y2 += 4;
+  yesNoLine();
+  y2 += 4;
+
+  // --- 5. New products ---
+  doc.setFont("helvetica", "bold");
+  doc.text("Do you anticipate importing new products?", M, y2);
+  y2 += LH + 4;
+  yesNoLine();
+  doc.setFont("helvetica", "normal");
+  doc.text("If yes, please provide the HTS codes and country of origin:", M, y2);
+  y2 += LH + 8;
+
+  // HTS / Country of Origin table
+  const col1X = M + 4;
+  const col2X = M + W / 2 + 10;
+  doc.setFont("helvetica", "bold");
+  doc.text("HTS Code", col1X, y2);
+  doc.text("Country of Origin", col2X, y2);
+  y2 += 4;
+  doc.setLineWidth(0.8);
+  doc.line(M, y2, M + W, y2);
+  y2 += 14;
+  doc.setFont("helvetica", "normal");
+  doc.setLineWidth(0.5);
+  for (let i = 0; i < 6; i++) {
+    doc.line(col1X, y2, M + W / 2 - 10, y2);
+    doc.line(col2X, y2, M + W, y2);
+    y2 += 18;
+  }
+  // --- Footnotes: always start a fresh page so they never collide with the
+  // table above or the footer below, regardless of how the text wraps ---
+  doc.addPage();
+  let y3 = 80;
+  doc.setFontSize(8.5);
+  y3 = richPara(doc, [
+    { text: "*Antidumping occurs when a foreign producer or exporter sells goods in the US at a price below the producer’s sales price in the country of origin or a third-country, or at a price less than the cost of production.", italic: true }
+  ], M, y3, W, 12, 8.5);
+  y3 += 8;
+  y3 = richPara(doc, [
+    { text: "*Countervailing occurs when a foreign government provides financial assistance to benefit the production, manufacture, or exportation of goods. Financial assistance can be in the form of direct payment, credit against taxes, and loans that are not based on current market conditions.", italic: true }
+  ], M, y3, W, 12, 8.5);
+  doc.setFontSize(FS);
+
+  // ---- Footer (final page) ----
   doc.addImage(IMG2, "PNG", (612 - 48) / 2, 690, 48, 37);
   doc.addImage(IMG3, "PNG", (612 - 480) / 2, 736, 480, 14);
 
