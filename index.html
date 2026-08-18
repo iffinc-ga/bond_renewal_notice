@@ -269,38 +269,6 @@ document.getElementById('btnGen').addEventListener('click', () => {
   y += LH + 12;
   doc.setLineWidth(0.5);
 
-  // Notices
-  y = richPara(doc, [
-    { text: "Please be advised that IFF requires a minimum of 30 days\u2019 written notice to process any bond termination request. Failure to provide timely instructions may result in automatic renewal.", italic: true }
-  ], M, y, W, LH, FS);
-  y += 6;
-  y = richPara(doc, [
-    { text: "Unless alternative instructions are received," },
-    { text: "IFF, Inc. will proceed with renewal", bold: true },
-    { text: "and issue the corresponding invoice for bond renewal and service fees." }
-  ], M, y, W, LH, FS);
-  y += 18;
-
-  // Signature block
-  inline(doc, [
-    { text: "Authorized Representative:", bold: true },
-    { text: " ____________________________    " },
-    { text: "Date:", bold: true },
-    { text: " ____________________" }
-  ], M, y, FS);
-  y += LH + 14;
-  inline(doc, [
-    { text: "Print Name:", bold: true },
-    { text: " ______________________________" }
-  ], M, y, FS);
-  y += LH + 14;
-
-  richPara(doc, [
-    { text: "Please return your completed notice to" },
-    { text: "bonds@iffusa.com", bold: true },
-    { text: "." }
-  ], M, y, W, LH, FS);
-
   // ---- Footer (page 1) ----
   doc.addImage(IMG2, "PNG", (612 - 48) / 2, 690, 48, 37);
   doc.addImage(IMG3, "PNG", (612 - 480) / 2, 736, 480, 14);
@@ -314,14 +282,14 @@ document.getElementById('btnGen').addEventListener('click', () => {
   doc.setFontSize(10.5);
   doc.text("CHBL#14289", 612 - M, 46, { align: "right" });
 
-  let y2 = 92;
-  const FS2 = 10, LH2 = 13, box2 = 8;
+  let y2 = 88;
+  const FS2 = 9.5, LH2 = 11.5, box2 = 7.5;
 
   doc.setFont("helvetica", "bold");
-  doc.setFontSize(12.5);
+  doc.setFontSize(12);
   doc.text("Additional Information", M, y2);
   doc.setFontSize(FS2);
-  y2 += LH2 + 8;
+  y2 += LH2 + 6;
 
   // Helper: draw a single checkbox + label, returns advanced y
   const checkboxLine = (label) => {
@@ -330,7 +298,7 @@ document.getElementById('btnGen').addEventListener('click', () => {
     doc.setFont("helvetica", "normal");
     doc.setFontSize(FS2);
     doc.text(label, M + 8 + box2 + 7, y2);
-    y2 += LH2 + 2;
+    y2 += LH2 + 1;
     doc.setLineWidth(0.5);
   };
 
@@ -341,10 +309,10 @@ document.getElementById('btnGen').addEventListener('click', () => {
     doc.setFontSize(FS2);
     doc.rect(M + 8, y2 - box2 + 1.5, box2, box2);
     doc.text("Yes", M + 8 + box2 + 7, y2);
-    const noX = M + 8 + box2 + 7 + doc.getTextWidth("Yes") + 20;
+    const noX = M + 8 + box2 + 7 + doc.getTextWidth("Yes") + 18;
     doc.rect(noX, y2 - box2 + 1.5, box2, box2);
     doc.text("No", noX + box2 + 7, y2);
-    y2 += LH2 + 5;
+    y2 += LH2 + 3;
     doc.setLineWidth(0.5);
   };
 
@@ -352,29 +320,29 @@ document.getElementById('btnGen').addEventListener('click', () => {
   const ruledLine = () => {
     doc.setLineWidth(0.5);
     doc.line(M, y2 + 2, M + W, y2 + 2);
-    y2 += LH2 + 2;
+    y2 += LH2 + 1;
   };
 
   // --- 1. Import value change ---
   doc.setFont("helvetica", "bold");
   doc.setFontSize(FS2);
   doc.text("My import value will:", M, y2);
-  y2 += LH2 + 2;
+  y2 += LH2 + 1;
   checkboxLine("Remain the Same");
   checkboxLine("Increase By _______ %");
   checkboxLine("Decrease By _______ %");
-  y2 += 5;
+  y2 += 4;
 
   // --- 2. New manufacturing countries ---
   doc.setFont("helvetica", "bold");
   doc.text("Are there any new manufacturing countries?", M, y2);
-  y2 += LH2 + 2;
+  y2 += LH2 + 1;
   yesNoLine();
   doc.setFont("helvetica", "normal");
   doc.text("If yes, list the countries:", M, y2);
-  y2 += LH2 + 3;
+  y2 += LH2 + 2;
   ruledLine();
-  y2 += 5;
+  y2 += 4;
 
   // --- 3. Antidumping / countervailing (current products) ---
   y2 = richPara(doc, [
@@ -382,9 +350,13 @@ document.getElementById('btnGen').addEventListener('click', () => {
     { text: "*", bold: true },
     { text: "?", bold: true }
   ], M, y2, W, LH2, FS2);
-  y2 += 3;
+  y2 += 2;
   yesNoLine();
-  y2 += 3;
+  doc.setFont("helvetica", "normal");
+  doc.text("If yes, list the products:", M, y2);
+  y2 += LH2 + 2;
+  ruledLine();
+  y2 += 2;
 
   // --- 4. Antidumping / countervailing (anticipated products) ---
   y2 = richPara(doc, [
@@ -392,18 +364,22 @@ document.getElementById('btnGen').addEventListener('click', () => {
     { text: "*", bold: true },
     { text: "?", bold: true }
   ], M, y2, W, LH2, FS2);
-  y2 += 3;
+  y2 += 2;
   yesNoLine();
-  y2 += 3;
+  doc.setFont("helvetica", "normal");
+  doc.text("If yes, list the products:", M, y2);
+  y2 += LH2 + 2;
+  ruledLine();
+  y2 += 2;
 
   // --- 5. New products ---
   doc.setFont("helvetica", "bold");
   doc.text("Do you anticipate importing new products?", M, y2);
-  y2 += LH2 + 2;
+  y2 += LH2 + 1;
   yesNoLine();
   doc.setFont("helvetica", "normal");
   doc.text("If yes, please provide the HTS codes and country of origin:", M, y2);
-  y2 += LH2 + 4;
+  y2 += LH2 + 3;
 
   // HTS / Country of Origin table
   const col1X = M + 4;
@@ -411,28 +387,60 @@ document.getElementById('btnGen').addEventListener('click', () => {
   doc.setFont("helvetica", "bold");
   doc.text("HTS Code", col1X, y2);
   doc.text("Country of Origin", col2X, y2);
-  y2 += 3;
+  y2 += 2;
   doc.setLineWidth(0.8);
   doc.line(M, y2, M + W, y2);
-  y2 += 12;
+  y2 += 10;
   doc.setFont("helvetica", "normal");
   doc.setLineWidth(0.5);
   for (let i = 0; i < 6; i++) {
     doc.line(col1X, y2, M + W / 2 - 10, y2);
     doc.line(col2X, y2, M + W, y2);
-    y2 += 15;
+    y2 += 12;
   }
-  y2 += 8;
+  y2 += 6;
+
+  // --- Closing notices, signature block, and return instructions ---
+  y2 = richPara(doc, [
+    { text: "Please be advised that IFF requires a minimum of 30 days’ written notice to process any bond termination request. Failure to provide timely instructions may result in automatic renewal.", italic: true }
+  ], M, y2, W, LH2, FS2);
+  y2 += 3;
+  y2 = richPara(doc, [
+    { text: "Unless alternative instructions are received," },
+    { text: "IFF, Inc. will proceed with renewal", bold: true },
+    { text: "and issue the corresponding invoice for bond renewal and service fees." }
+  ], M, y2, W, LH2, FS2);
+  y2 += 6;
+
+  inline(doc, [
+    { text: "Authorized Representative:", bold: true },
+    { text: " ____________________________    " },
+    { text: "Date:", bold: true },
+    { text: " ____________________" }
+  ], M, y2, FS2);
+  y2 += LH2 + 7;
+  inline(doc, [
+    { text: "Print Name:", bold: true },
+    { text: " ______________________________" }
+  ], M, y2, FS2);
+  y2 += LH2 + 7;
+
+  y2 = richPara(doc, [
+    { text: "Please return your completed notice to" },
+    { text: "bonds@iffusa.com", bold: true },
+    { text: "." }
+  ], M, y2, W, LH2, FS2);
+  y2 += 6;
 
   // --- Footnotes ---
-  doc.setFontSize(7.5);
+  doc.setFontSize(7);
   y2 = richPara(doc, [
     { text: "*Antidumping occurs when a foreign producer or exporter sells goods in the US at a price below the producer’s sales price in the country of origin or a third-country, or at a price less than the cost of production.", italic: true }
-  ], M, y2, W, 9.5, 7.5);
-  y2 += 4;
+  ], M, y2, W, 9, 7);
+  y2 += 3;
   y2 = richPara(doc, [
     { text: "*Countervailing occurs when a foreign government provides financial assistance to benefit the production, manufacture, or exportation of goods. Financial assistance can be in the form of direct payment, credit against taxes, and loans that are not based on current market conditions.", italic: true }
-  ], M, y2, W, 9.5, 7.5);
+  ], M, y2, W, 9, 7);
   doc.setFontSize(FS);
 
   // ---- Footer (page 2) ----
