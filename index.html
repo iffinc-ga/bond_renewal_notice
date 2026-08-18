@@ -269,20 +269,8 @@ document.getElementById('btnGen').addEventListener('click', () => {
   y += LH + 12;
   doc.setLineWidth(0.5);
 
-  // ---- Footer (page 1) ----
-  doc.addImage(IMG2, "PNG", (612 - 48) / 2, 690, 48, 37);
-  doc.addImage(IMG3, "PNG", (612 - 480) / 2, 736, 480, 14);
-
-  // ==================== PAGE 2: Additional Information ====================
-  doc.addPage();
-
-  // Repeat header
-  doc.addImage(IMG1, "JPEG", M, 26, 46, 46);
-  doc.setFont("helvetica", "normal");
-  doc.setFontSize(10.5);
-  doc.text("CHBL#14289", 612 - M, 46, { align: "right" });
-
-  let y2 = 88;
+  // ==================== Additional Information (continues on page 1) ====================
+  let y2 = y + 16;
   const FS2 = 9.5, LH2 = 11.5, box2 = 7.5;
 
   doc.setFont("helvetica", "bold");
@@ -358,6 +346,20 @@ document.getElementById('btnGen').addEventListener('click', () => {
   ruledLine();
   y2 += 2;
 
+  // ---- Footer (page 1) ----
+  doc.addImage(IMG2, "PNG", (612 - 48) / 2, 690, 48, 37);
+  doc.addImage(IMG3, "PNG", (612 - 480) / 2, 736, 480, 14);
+
+  // ==================== PAGE 2 ====================
+  doc.addPage();
+
+  // Repeat header
+  doc.addImage(IMG1, "JPEG", M, 26, 46, 46);
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(10.5);
+  doc.text("CHBL#14289", 612 - M, 46, { align: "right" });
+  y2 = 88;
+
   // --- 4. Antidumping / countervailing (anticipated products) ---
   y2 = richPara(doc, [
     { text: "Do you anticipate importing products subject to antidumping or countervailing duties", bold: true },
@@ -370,7 +372,7 @@ document.getElementById('btnGen').addEventListener('click', () => {
   doc.text("If yes, list the products:", M, y2);
   y2 += LH2 + 2;
   ruledLine();
-  y2 += 2;
+  y2 += 6;
 
   // --- 5. New products ---
   doc.setFont("helvetica", "bold");
