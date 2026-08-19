@@ -334,14 +334,14 @@ document.getElementById('btnGen').addEventListener('click', () => {
 
   // --- 3. Antidumping / countervailing (current products) ---
   y2 = richPara(doc, [
-    { text: "Are any products subject to antidumping/countervailing", bold: true },
+    { text: "Are any products subject to antidumping/countervailing duties (ADD/CVD)", bold: true },
     { text: "*", bold: true },
     { text: "?", bold: true }
   ], M, y2, W, LH2, FS2);
   y2 += 2;
   yesNoLine();
   doc.setFont("helvetica", "normal");
-  doc.text("If yes, list the products:", M, y2);
+  doc.text("If yes, list the products and ADD/CVD cases:", M, y2);
   y2 += LH2 + 2;
   ruledLine();
   y2 += 10;
