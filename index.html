@@ -344,7 +344,12 @@ document.getElementById('btnGen').addEventListener('click', () => {
   doc.text("If yes, list the products:", M, y2);
   y2 += LH2 + 2;
   ruledLine();
-  y2 += 2;
+  y2 += 10;
+
+  // Continuation note
+  doc.setFont("helvetica", "italic");
+  doc.setFontSize(FS2);
+  doc.text("Continued on page 2", M + W, y2, { align: "right" });
 
   // ---- Footer (page 1) ----
   doc.addImage(IMG2, "PNG", (612 - 48) / 2, 690, 48, 37);
