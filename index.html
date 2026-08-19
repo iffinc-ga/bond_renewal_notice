@@ -373,14 +373,14 @@ document.getElementById('btnGen').addEventListener('click', () => {
 
   // --- 4. Antidumping / countervailing (anticipated products) ---
   y2 = richPara(doc, [
-    { text: "Do you anticipate importing products subject to antidumping or countervailing duties", bold: true },
+    { text: "Do you anticipate importing products subject to antidumping or countervailing duties (ADD/CVD)", bold: true },
     { text: "*", bold: true },
     { text: "?", bold: true }
   ], M, y2, W, LH2, FS2);
   y2 += 4;
   yesNoLine();
   doc.setFont("helvetica", "normal");
-  doc.text("If yes, list the products:", M, y2);
+  doc.text("If yes, list the products and ADD/CVD cases:", M, y2);
   y2 += LH2 + 4;
   ruledLine();
   y2 += 14;
@@ -470,7 +470,4 @@ document.getElementById('btnGen').addEventListener('click', () => {
     err.textContent = "Error generating PDF: " + (e && e.message ? e.message : e);
     err.style.display = 'block';
   }
-});
-</script>
-</body>
-</html>
+})
