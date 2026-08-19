@@ -271,7 +271,7 @@ document.getElementById('btnGen').addEventListener('click', () => {
 
   // ==================== Additional Information (continues on page 1) ====================
   let y2 = y + 16;
-  const FS2 = 9.5, LH2 = 11.5, box2 = 7.5;
+  let FS2 = 9.5, LH2 = 11.5, box2 = 7.5;
 
   doc.setFont("helvetica", "bold");
   doc.setFontSize(12);
@@ -358,7 +358,11 @@ document.getElementById('btnGen').addEventListener('click', () => {
   doc.setFont("helvetica", "normal");
   doc.setFontSize(10.5);
   doc.text("CHBL#14289", 612 - M, 46, { align: "right" });
-  y2 = 88;
+  y2 = 110;
+
+  // Give page-2 questions noticeably more breathing room than the compact
+  // page-1 versions (page 1 has little spare room above its footer; page 2 has plenty).
+  FS2 = 10.5; LH2 = 15.5; box2 = 8.5;
 
   // --- 4. Antidumping / countervailing (anticipated products) ---
   y2 = richPara(doc, [
@@ -366,22 +370,22 @@ document.getElementById('btnGen').addEventListener('click', () => {
     { text: "*", bold: true },
     { text: "?", bold: true }
   ], M, y2, W, LH2, FS2);
-  y2 += 2;
+  y2 += 4;
   yesNoLine();
   doc.setFont("helvetica", "normal");
   doc.text("If yes, list the products:", M, y2);
-  y2 += LH2 + 2;
+  y2 += LH2 + 4;
   ruledLine();
-  y2 += 6;
+  y2 += 14;
 
   // --- 5. New products ---
   doc.setFont("helvetica", "bold");
   doc.text("Do you anticipate importing new products?", M, y2);
-  y2 += LH2 + 1;
+  y2 += LH2 + 3;
   yesNoLine();
   doc.setFont("helvetica", "normal");
   doc.text("If yes, please provide the HTS codes and country of origin:", M, y2);
-  y2 += LH2 + 3;
+  y2 += LH2 + 6;
 
   // HTS / Country of Origin table
   const col1X = M + 4;
@@ -389,30 +393,30 @@ document.getElementById('btnGen').addEventListener('click', () => {
   doc.setFont("helvetica", "bold");
   doc.text("HTS Code", col1X, y2);
   doc.text("Country of Origin", col2X, y2);
-  y2 += 2;
+  y2 += 4;
   doc.setLineWidth(0.8);
   doc.line(M, y2, M + W, y2);
-  y2 += 10;
+  y2 += 15;
   doc.setFont("helvetica", "normal");
   doc.setLineWidth(0.5);
   for (let i = 0; i < 6; i++) {
     doc.line(col1X, y2, M + W / 2 - 10, y2);
     doc.line(col2X, y2, M + W, y2);
-    y2 += 12;
+    y2 += 17;
   }
-  y2 += 6;
+  y2 += 12;
 
   // --- Closing notices, signature block, and return instructions ---
   y2 = richPara(doc, [
     { text: "Please be advised that IFF requires a minimum of 30 days’ written notice to process any bond termination request. Failure to provide timely instructions may result in automatic renewal.", italic: true }
   ], M, y2, W, LH2, FS2);
-  y2 += 3;
+  y2 += 6;
   y2 = richPara(doc, [
     { text: "Unless alternative instructions are received," },
     { text: "IFF, Inc. will proceed with renewal", bold: true },
     { text: "and issue the corresponding invoice for bond renewal and service fees." }
   ], M, y2, W, LH2, FS2);
-  y2 += 6;
+  y2 += 12;
 
   inline(doc, [
     { text: "Authorized Representative:", bold: true },
@@ -420,26 +424,26 @@ document.getElementById('btnGen').addEventListener('click', () => {
     { text: "Date:", bold: true },
     { text: " ____________________" }
   ], M, y2, FS2);
-  y2 += LH2 + 7;
+  y2 += LH2 + 10;
   inline(doc, [
     { text: "Print Name:", bold: true },
     { text: " ______________________________" }
   ], M, y2, FS2);
-  y2 += LH2 + 7;
+  y2 += LH2 + 10;
 
   y2 = richPara(doc, [
     { text: "Please return your completed notice to" },
     { text: "bonds@iffusa.com", bold: true },
     { text: "." }
   ], M, y2, W, LH2, FS2);
-  y2 += 6;
+  y2 += 10;
 
   // --- Footnotes ---
   doc.setFontSize(7);
   y2 = richPara(doc, [
     { text: "*Antidumping occurs when a foreign producer or exporter sells goods in the US at a price below the producer’s sales price in the country of origin or a third-country, or at a price less than the cost of production.", italic: true }
   ], M, y2, W, 9, 7);
-  y2 += 3;
+  y2 += 5;
   y2 = richPara(doc, [
     { text: "*Countervailing occurs when a foreign government provides financial assistance to benefit the production, manufacture, or exportation of goods. Financial assistance can be in the form of direct payment, credit against taxes, and loans that are not based on current market conditions.", italic: true }
   ], M, y2, W, 9, 7);
