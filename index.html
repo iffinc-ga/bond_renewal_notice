@@ -500,21 +500,22 @@ document.getElementById('btnGen').addEventListener('click', () => {
       { text: "Authorized Representative:", bold: true },
       { text: " ____________________________    " },
       { text: "Date:", bold: true },
-      { text: " ____________________" }
+      { text: " ________________" }
     ];
     inline(doc, sigSegs, M, y2, FS2);
     doc.setFont("helvetica", "bold"); doc.setFontSize(FS2);
     const repLabelW = doc.getTextWidth(sigSegs[0].text);
     doc.setFont("helvetica", "normal");
     const repFieldX = M + repLabelW + doc.getTextWidth(" ");
-    addTextField(repFieldX, y2 - FS2, 190, FS2 + 5, Math.min(FS2, 10));
+    // Size the field to exactly the printed underline so it never runs into "Date:"
+    addTextField(repFieldX, y2 - FS2, doc.getTextWidth(sigSegs[1].text.trim()), FS2 + 5, Math.min(FS2, 10));
     doc.setFont("helvetica", "normal");
     const blankW = doc.getTextWidth(sigSegs[1].text);
     doc.setFont("helvetica", "bold");
     const dateLabelW = doc.getTextWidth(sigSegs[2].text);
     doc.setFont("helvetica", "normal");
     const dateFieldX = M + repLabelW + blankW + dateLabelW + doc.getTextWidth(" ");
-    addTextField(dateFieldX, y2 - FS2, 100, FS2 + 5, Math.min(FS2, 10));
+    addTextField(dateFieldX, y2 - FS2, doc.getTextWidth(sigSegs[3].text.trim()), FS2 + 5, Math.min(FS2, 10));
   }
   y2 += LH2 + 10;
   {
@@ -527,7 +528,7 @@ document.getElementById('btnGen').addEventListener('click', () => {
     const printLabelW = doc.getTextWidth(printSegs[0].text);
     doc.setFont("helvetica", "normal");
     const printFieldX = M + printLabelW + doc.getTextWidth(" ");
-    addTextField(printFieldX, y2 - FS2, 210, FS2 + 5, Math.min(FS2, 10));
+    addTextField(printFieldX, y2 - FS2, doc.getTextWidth(printSegs[1].text.trim()), FS2 + 5, Math.min(FS2, 10));
   }
   y2 += LH2 + 10;
 
