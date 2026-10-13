@@ -208,6 +208,9 @@ document.getElementById('btnGen').addEventListener('click', () => {
 
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF({ unit: "pt", format: "letter" });   // 612 x 792
+  // Open the saved PDF at 100% zoom (actual size) in continuous page view, instead
+  // of letting the viewer pick its own (which was coming up around 265%).
+  try { doc.setDisplayMode("100%", "continuous", "UseNone"); } catch (e) {}
   // Tell every PDF viewer (Adobe Acrobat/Reader included) to regenerate
   // form-field appearances itself instead of trusting whatever appearance
   // stream jsPDF baked in. Without this, some viewers only redraw a
@@ -403,9 +406,7 @@ document.getElementById('btnGen').addEventListener('click', () => {
 
   // --- 3. Antidumping / countervailing (current products) ---
   y2 = richPara(doc, [
-    { text: "Are any products subject to antidumping/countervailing duties (ADD/CVD)", bold: true },
-    { text: "*", bold: true },
-    { text: "?", bold: true }
+    { text: "Are any products subject to antidumping/countervailing duties (ADD/CVD)*?", bold: true }
   ], M, y2, W, LH2, FS2);
   y2 += 2;
   yesNoLine();
@@ -442,9 +443,7 @@ document.getElementById('btnGen').addEventListener('click', () => {
 
   // --- 4. Antidumping / countervailing (anticipated products) ---
   y2 = richPara(doc, [
-    { text: "Do you anticipate importing products subject to antidumping or countervailing duties (ADD/CVD)", bold: true },
-    { text: "*", bold: true },
-    { text: "?", bold: true }
+    { text: "Do you anticipate importing products subject to antidumping or countervailing duties (ADD/CVD)*?", bold: true }
   ], M, y2, W, LH2, FS2);
   y2 += 4;
   yesNoLine();
